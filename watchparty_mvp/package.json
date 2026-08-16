@@ -1,8 +1,8 @@
 {
   "name": "watchparty-two",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "private": true,
-  "description": "AmorellyWatch v3.2 cozy light/dark watch party with improved WebRTC voice/video",
+  "description": "AmorellyWatch v3.3 cozy watch party with splash, invitations, friends, themes and WebRTC",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
