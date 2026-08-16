@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Двое — смотрим вместе</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <div class="brand">🍿 Двое</div>
+        <div class="tag">Смотрим вместе, даже если не рядом</div>
+      </div>
+      <div class="presence"><span id="dot"></span><span id="presenceText">не подключено</span></div>
+    </header>
+
+    <section id="lobby" class="card lobby">
+      <h1>Совместный просмотр на двоих</h1>
+      <p>Создай комнату и отправь ссылку второму человеку.</p>
+
+      <label>
+        Твоё имя
+        <input id="nameInput" maxlength="30" placeholder="Например, Саша" />
+      </label>
+
+      <div class="row">
+        <button id="createBtn" class="primary">Создать комнату</button>
+      </div>
+    </section>
+
+    <section id="room" class="room hidden">
+      <div class="main">
+        <div class="card share">
+          <div>
+            <div class="eyebrow">Комната</div>
+            <strong id="roomCode"></strong>
+          </div>
+          <button id="copyBtn">Скопировать ссылку</button>
+        </div>
+
+        <div class="card source">
+          <div class="tabs">
+            <button class="tab active" data-tab="youtube">YouTube</button>
+            <button class="tab" data-tab="local">Локальный файл</button>
+          </div>
+
+          <div id="youtubeTab">
+            <div class="sourceRow">
+              <input id="youtubeUrl" placeholder="Вставь ссылку YouTube" />
+              <button id="loadYoutubeBtn" class="primary">Открыть</button>
+            </div>
+          </div>
+
+          <div id="localTab" class="hidden">
+            <div class="localHelp">Оба выбирают у себя один и тот же файл. Сам файл никуда не загружается.</div>
+            <input id="fileInput" type="file" accept="video/*" />
+          </div>
+        </div>
+
+        <div class="playerWrap card">
+          <div id="emptyState" class="emptyState">Выбери источник видео выше</div>
+          <div id="youtubePlayer"></div>
+          <video id="localVideo" class="hidden" controls playsinline></video>
+        </div>
+
+        <div class="card controls">
+          <button id="syncBtn">↻ Догнать партнёра</button>
+          <span id="syncState">Ожидание видео</span>
+        </div>
+      </div>
+
+      <aside class="chat card">
+        <div class="chatHead">Чат</div>
+        <div id="messages" class="messages"></div>
+        <form id="chatForm" class="chatForm">
+          <input id="chatInput" maxlength="500" placeholder="Сообщение…" />
+          <button class="primary">→</button>
+        </form>
+      </aside>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
