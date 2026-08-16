@@ -67,7 +67,6 @@ function maybeStartCall(roomId) {
     .sort((a, b) => a[1].joinedAt - b[1].joinedAt);
 
   if (ready.length === 2) {
-    // Only the first participant creates the offer to avoid glare.
     io.to(ready[0][0]).emit("start-call", { peerId: ready[1][0] });
   }
 }
@@ -79,8 +78,6 @@ io.on("connection", (socket) => {
 
     const room = getRoom(roomId);
 
-    // A reload may leave the previous socket visible for a moment.
-    // Clean stale/disconnected member entries before enforcing the 2-person limit.
     for (const memberId of room.members.keys()) {
       if (!io.sockets.sockets.get(memberId)) {
         room.members.delete(memberId);
@@ -102,7 +99,6 @@ io.on("connection", (socket) => {
       voiceReady: false,
       cameraReady: false
     });
-    room.lastActiveAt = Date.now();
 
     socket.emit("room-state", {
       media: room.media,
@@ -111,31 +107,13 @@ io.on("connection", (socket) => {
     });
 
     emitParticipants(roomId);
-    socket.to(roomId).emit("system-message", {
-      text: `${socket.data.name} подключился`
-    });
-  });
-
-  socket.on("set-name", ({ name }) => {
-    const roomId = socket.data.roomId;
-    const room = rooms.get(roomId);
-    if (!room) return;
-
-    const clean = String(name || "Гость").trim().slice(0, 30) || "Гость";
-    socket.data.name = clean;
-
-    const member = room.members.get(socket.id);
-    if (member) member.name = clean;
-
-    touchRoom(roomId);
-    emitParticipants(roomId);
+    socket.to(roomId).emit("system-message", { text: `${socket.data.name} подключился` });
   });
 
   socket.on("set-media", (payload) => {
     const roomId = socket.data.roomId;
     const room = rooms.get(roomId);
     if (!room) return;
-
     room.media = payload;
     touchRoom(roomId);
     socket.to(roomId).emit("set-media", payload);
@@ -161,16 +139,15 @@ io.on("connection", (socket) => {
     const room = rooms.get(roomId);
     if (!room) return;
 
-    const state = {
+    room.playback = {
       time: Math.max(0, Number(payload.time) || 0),
       playing: !!payload.playing,
       updatedAt: Date.now(),
       senderId: socket.id
     };
 
-    room.playback = state;
     touchRoom(roomId);
-    socket.to(roomId).emit("sync", state);
+    socket.to(roomId).emit("sync", room.playback);
   });
 
   socket.on("request-sync", () => {
@@ -185,7 +162,6 @@ io.on("connection", (socket) => {
     const roomId = socket.data.roomId;
     const clean = String(text || "").trim().slice(0, 500);
     if (!roomId || !clean) return;
-
     touchRoom(roomId);
     io.to(roomId).emit("chat", {
       id: socket.id,
@@ -197,9 +173,8 @@ io.on("connection", (socket) => {
 
   socket.on("reaction", ({ emoji }) => {
     const roomId = socket.data.roomId;
-    const allowed = ["❤️", "😂", "😱", "🍿", "🔥"];
+    const allowed = ["❤️", "😂", "😱", "🍿", "🔥", "💖"];
     if (!roomId || !allowed.includes(emoji)) return;
-
     touchRoom(roomId);
     io.to(roomId).emit("reaction", {
       emoji,
@@ -213,7 +188,6 @@ io.on("connection", (socket) => {
     const roomId = socket.data.roomId;
     const room = rooms.get(roomId);
     if (!room) return;
-
     const member = room.members.get(socket.id);
     if (!member) return;
 
@@ -225,21 +199,15 @@ io.on("connection", (socket) => {
   });
 
   socket.on("webrtc-offer", ({ targetId, offer }) => {
-    if (targetId && offer) {
-      io.to(targetId).emit("webrtc-offer", { fromId: socket.id, offer });
-    }
+    if (targetId && offer) io.to(targetId).emit("webrtc-offer", { fromId: socket.id, offer });
   });
 
   socket.on("webrtc-answer", ({ targetId, answer }) => {
-    if (targetId && answer) {
-      io.to(targetId).emit("webrtc-answer", { fromId: socket.id, answer });
-    }
+    if (targetId && answer) io.to(targetId).emit("webrtc-answer", { fromId: socket.id, answer });
   });
 
   socket.on("webrtc-ice", ({ targetId, candidate }) => {
-    if (targetId && candidate) {
-      io.to(targetId).emit("webrtc-ice", { fromId: socket.id, candidate });
-    }
+    if (targetId && candidate) io.to(targetId).emit("webrtc-ice", { fromId: socket.id, candidate });
   });
 
   socket.on("webrtc-renegotiate", ({ targetId }) => {
@@ -259,20 +227,15 @@ io.on("connection", (socket) => {
     setTimeout(() => {
       const current = rooms.get(roomId);
       if (!current) return;
-
       emitParticipants(roomId);
       io.to(roomId).emit("peer-disconnected", { id: socket.id });
-
       if (socket.data.name) {
-        io.to(roomId).emit("system-message", {
-          text: `${socket.data.name} отключился`
-        });
+        io.to(roomId).emit("system-message", { text: `${socket.data.name} отключился` });
       }
     }, 100);
   });
 });
 
-// Keep room state through refreshes and short disconnects.
 setInterval(() => {
   const now = Date.now();
   for (const [roomId, room] of rooms.entries()) {
@@ -284,5 +247,5 @@ setInterval(() => {
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => {
-  console.log(`WatchParty v3 running on http://localhost:${port}`);
+  console.log(`AmorellyWatch v3.2 running on http://localhost:${port}`);
 });
