@@ -3,29 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#eceae8" />
+  <meta name="theme-color" content="#f3efec" />
   <title>AmorellyWatch — смотрим вместе</title>
-  <link rel="stylesheet" href="/style-v3.css?v=3" />
+  <link rel="stylesheet" href="/style-v32.css?v=32" />
 </head>
-<body>
+<body data-theme="light">
   <main class="app">
     <header class="topbar">
       <div class="brandWrap">
         <div class="brandRow">
           <div class="brandIdentity">
-            <img src="/amorelly-logo.jpg?v=31" class="brandLogo" alt="AmorellyWatch logo" />
+            <img src="/amorelly-logo.jpg?v=32" class="brandLogo" alt="AmorellyWatch logo" />
             <div class="brandInfo">
-              <div class="brandName">AmorellyWatch <span class="version">v3.1</span></div>
+              <div class="brandName">AmorellyWatch <span class="version">v3.2</span></div>
               <div class="tag">Смотрим вместе, даже если не рядом</div>
             </div>
           </div>
-          <button id="menuBtn" class="iconBtn hidden" title="Меню">☰</button>
+          <div class="topControls hidden" id="topControls">
+            <button id="themeBtn" class="iconBtn" title="Сменить тему">☀️ Светлая</button>
+            <button id="menuBtn" class="iconBtn" title="Меню">☰</button>
+          </div>
         </div>
       </div>
       <div class="presence"><span id="dot"></span><span id="presenceText">не подключено</span></div>
     </header>
 
     <section id="lobby" class="card lobby">
+      <div class="welcomeLogoRow">
+        <img src="/amorelly-logo.jpg?v=32" class="welcomeLogo" alt="AmorellyWatch logo" />
+      </div>
       <h1 id="lobbyTitle">AmorellyWatch для двоих</h1>
       <p id="lobbyText">Создай комнату и отправь ссылку второму человеку.</p>
       <label>
@@ -44,7 +50,9 @@
           <strong id="roomCode"></strong>
         </div>
         <div id="participants" class="participants"></div>
-        <button id="copyBtn">Скопировать ссылку</button>
+        <div class="roomBarActions">
+          <button id="copyBtn">Скопировать ссылку</button>
+        </div>
       </div>
 
       <div class="watchGrid">
@@ -75,7 +83,7 @@
 
           <div id="playerWrap" class="playerWrap card">
             <div id="emptyState" class="emptyState">
-              <div class="emptyIcon">🎬</div>
+              <div class="emptyIcon">💞</div>
               <div>Выбери источник видео выше</div>
             </div>
             <div id="youtubePlayer"></div>
@@ -85,12 +93,13 @@
             <div id="videoCallLayer" class="videoCallLayer">
               <div id="remoteCamWrap" class="camTile hidden">
                 <video id="remoteVideo" autoplay playsinline></video>
-                <span>Собеседник</span>
+                <span id="remoteCamLabel">Собеседник</span>
               </div>
               <div id="localCamWrap" class="camTile small hidden">
                 <video id="localVideoCall" autoplay muted playsinline></video>
                 <span>Ты</span>
               </div>
+              <div id="remoteNoCam" class="remoteNoCam hidden">💗 Собеседник без камеры</div>
             </div>
 
             <button id="fullscreenBtn" class="overlayBtn fullscreenBtn" title="На весь экран">⛶</button>
@@ -107,6 +116,7 @@
               <button class="reactionBtn" data-emoji="😱">😱</button>
               <button class="reactionBtn" data-emoji="🍿">🍿</button>
               <button class="reactionBtn" data-emoji="🔥">🔥</button>
+              <button class="reactionBtn" data-emoji="💖">💖</button>
             </div>
           </div>
 
@@ -117,7 +127,7 @@
             </div>
             <div class="mediaButtons">
               <button id="micBtn" title="Микрофон">🎙️ Микрофон</button>
-              <button id="headphonesBtn" title="Звук собеседника">🎧 Наушники</button>
+              <button id="headphonesBtn" title="Звук собеседника">🎧 Звук собеседника</button>
               <button id="cameraBtn" title="Камера">📷 Камера</button>
               <button id="hangupBtn" class="danger hidden">Завершить связь</button>
             </div>
@@ -152,8 +162,8 @@
     <section class="drawerSection">
       <h3>Текущий сериал</h3>
       <div class="episodeInputs">
-        <label>Название
-          <input id="episodeTitle" maxlength="80" placeholder="Например, Физрук" />
+        <label>Сериал
+          <input id="episodeTitle" maxlength="80" placeholder="Сериал" />
         </label>
         <div class="twoCols">
           <label>Сезон
@@ -176,10 +186,10 @@
     </section>
   </aside>
 
-  <audio id="remoteAudio" autoplay></audio>
+  <audio id="remoteAudio" autoplay playsinline></audio>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="/app-v3.js?v=3"></script>
+  <script src="/app-v32.js?v=32"></script>
 </body>
 </html>
