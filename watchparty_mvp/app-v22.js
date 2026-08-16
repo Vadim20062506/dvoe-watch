@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b0b10" />
+  <title>Двое — смотрим вместе</title>
+  <link rel="stylesheet" href="/style.css?v=22" />
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <div class="brand">🍿 Двое <span class="version">v2.2</span></div>
+        <div class="tag">Смотрим вместе, даже если не рядом</div>
+      </div>
+      <div class="presence"><span id="dot"></span><span id="presenceText">не подключено</span></div>
+    </header>
+
+    <section id="lobby" class="card lobby">
+      <h1 id="lobbyTitle">Совместный просмотр на двоих</h1>
+      <p id="lobbyText">Создай комнату и отправь ссылку второму человеку.</p>
+
+      <label>
+        Твоё имя
+        <input id="nameInput" maxlength="30" placeholder="Например, Саша" />
+      </label>
+
+      <div class="row">
+        <button id="createBtn" class="primary">Создать комнату</button>
+      </div>
+    </section>
+
+    <section id="room" class="room hidden">
+      <div class="main">
+        <div class="card share">
+          <div>
+            <div class="eyebrow">Комната</div>
+            <strong id="roomCode"></strong>
+          </div>
+
+          <div id="participants" class="participants"></div>
+
+          <button id="copyBtn">Скопировать ссылку</button>
+        </div>
+
+        <div class="card episodeBar">
+          <div class="episodeInputs">
+            <label>Сезон
+              <input id="seasonInput" type="number" min="1" value="1" />
+            </label>
+            <label>Серия
+              <input id="episodeInput" type="number" min="1" value="1" />
+            </label>
+            <label class="titleInput">Название
+              <input id="episodeTitle" maxlength="80" placeholder="Например, Физрук" />
+            </label>
+          </div>
+          <button id="setEpisodeBtn">Сохранить серию</button>
+        </div>
+
+        <div class="card source">
+          <div class="tabs">
+            <button class="tab active" data-tab="youtube">YouTube</button>
+            <button class="tab" data-tab="local">Локальный файл</button>
+          </div>
+
+          <div id="youtubeTab">
+            <div class="sourceRow">
+              <input id="youtubeUrl" placeholder="Вставь ссылку YouTube" />
+              <button id="loadYoutubeBtn" class="primary">Открыть</button>
+            </div>
+          </div>
+
+          <div id="localTab" class="hidden">
+            <div class="localHelp">Оба выбирают у себя один и тот же файл. Сам файл никуда не загружается.</div>
+            <input id="fileInput" type="file" accept="video/*" />
+          </div>
+        </div>
+
+        <div id="playerWrap" class="playerWrap card">
+          <div id="emptyState" class="emptyState">
+            <div class="emptyIcon">🎬</div>
+            <div>Выбери источник видео выше</div>
+          </div>
+          <div id="youtubePlayer"></div>
+          <video id="localVideo" class="hidden" controls playsinline></video>
+          <div id="reactionLayer" class="reactionLayer"></div>
+
+          <button id="fullscreenBtn" class="overlayBtn fullscreenBtn" title="На весь экран">⛶</button>
+        </div>
+
+        <div class="card controls">
+          <div class="controlGroup">
+            <button id="syncBtn">↻ Синхронизировать</button>
+            <span id="syncState">Ожидание видео</span>
+          </div>
+
+          <div class="reactions" aria-label="Реакции">
+            <button class="reactionBtn" data-emoji="❤️">❤️</button>
+            <button class="reactionBtn" data-emoji="😂">😂</button>
+            <button class="reactionBtn" data-emoji="😱">😱</button>
+            <button class="reactionBtn" data-emoji="🍿">🍿</button>
+            <button class="reactionBtn" data-emoji="🔥">🔥</button>
+          </div>
+        </div>
+
+        <div class="card voiceCard">
+          <div>
+            <strong>🎙️ Голос вдвоём</strong>
+            <div id="voiceStatus" class="muted">Микрофон выключен</div>
+          </div>
+          <div class="voiceActions">
+            <button id="voiceBtn" class="primary">Включить голос</button>
+            <button id="muteBtn" class="hidden">Выключить микрофон</button>
+          </div>
+          <audio id="remoteAudio" autoplay></audio>
+        </div>
+      </div>
+
+      <aside class="chat card">
+        <div class="chatHead">
+          <span>Чат</span>
+          <span id="episodeBadge" class="episodeBadge">S1 · E1</span>
+        </div>
+        <div id="messages" class="messages"></div>
+        <form id="chatForm" class="chatForm">
+          <input id="chatInput" maxlength="500" placeholder="Сообщение…" />
+          <button class="primary">→</button>
+        </form>
+      </aside>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="/app-v22.js"></script>
+</body>
+</html>
