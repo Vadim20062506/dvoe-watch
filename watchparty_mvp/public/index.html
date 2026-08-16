@@ -5,9 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#f3efec" />
   <title>AmorellyWatch — смотрим вместе</title>
-  <link rel="stylesheet" href="/style-v32.css?v=32" />
+  <link rel="stylesheet" href="/style-v33.css?v=33" />
 </head>
 <body data-theme="light">
+  <div id="splash" class="splash">
+    <div class="splashInner">
+      <img src="/amorelly-logo.jpg?v=33" class="splashLogo" alt="AmorellyWatch" />
+      <div class="splashName">AmorellyWatch</div>
+      <div class="splashHearts">♥ ✦ ♥ ✦ ♥</div>
+      <div class="splashLoader"><span></span></div>
+    </div>
+  </div>
   <main class="app">
     <header class="topbar">
       <div class="brandWrap">
@@ -15,7 +23,7 @@
           <div class="brandIdentity">
             <img src="/amorelly-logo.jpg?v=32" class="brandLogo" alt="AmorellyWatch logo" />
             <div class="brandInfo">
-              <div class="brandName">AmorellyWatch <span class="version">v3.2</span></div>
+              <div class="brandName">AmorellyWatch <span class="version">v3.3</span></div>
               <div class="tag">Смотрим вместе, даже если не рядом</div>
             </div>
           </div>
@@ -31,6 +39,13 @@
     <section id="lobby" class="card lobby">
       <div class="welcomeLogoRow">
         <img src="/amorelly-logo.jpg?v=32" class="welcomeLogo" alt="AmorellyWatch logo" />
+      </div>
+      <div id="inviteBadge" class="inviteBadge hidden">
+        <div class="inviteIcon">💌</div>
+        <div>
+          <strong>Тебя пригласили на совместный просмотр</strong>
+          <div id="inviteRoomText" class="muted"></div>
+        </div>
       </div>
       <h1 id="lobbyTitle">AmorellyWatch для двоих</h1>
       <p id="lobbyText">Создай комнату и отправь ссылку второму человеку.</p>
@@ -51,7 +66,8 @@
         </div>
         <div id="participants" class="participants"></div>
         <div class="roomBarActions">
-          <button id="copyBtn">Скопировать ссылку</button>
+          <button id="inviteBtn" class="primary">💌 Пригласить</button>
+          <button id="copyBtn">Ссылка</button>
         </div>
       </div>
 
@@ -184,12 +200,39 @@
       </div>
       <div id="historyList" class="historyList"></div>
     </section>
+
+    <section class="drawerSection">
+      <div class="sectionTitleRow">
+        <h3>Друзья</h3>
+        <span class="muted">локально</span>
+      </div>
+      <p class="drawerHint">Пока без аккаунтов: добавь имя, чтобы быстро готовить приглашения. Список хранится только в этом браузере.</p>
+      <div class="friendAdd">
+        <input id="friendNameInput" maxlength="30" placeholder="Имя друга" />
+        <button id="addFriendBtn" class="primary">Добавить</button>
+      </div>
+      <div id="friendsList" class="friendsList"></div>
+    </section>
   </aside>
+
+  <div id="inviteModalBackdrop" class="modalBackdrop hidden"></div>
+  <section id="inviteModal" class="inviteModal card hidden" role="dialog" aria-modal="true">
+    <button id="closeInviteModalBtn" class="modalClose">✕</button>
+    <div class="inviteBigIcon">💌</div>
+    <h2>Пригласить в AmorellyWatch</h2>
+    <p class="muted">Отправь эту ссылку — человек попадёт прямо в вашу комнату.</p>
+    <div id="inviteLinkBox" class="inviteLinkBox"></div>
+    <div class="inviteModalActions">
+      <button id="copyInviteTextBtn" class="primary">Скопировать приглашение</button>
+      <button id="copyInviteLinkBtn">Скопировать ссылку</button>
+    </div>
+    <div id="friendQuickInvite" class="friendQuickInvite"></div>
+  </section>
 
   <audio id="remoteAudio" autoplay playsinline></audio>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="/app-v32.js?v=32"></script>
+  <script src="/app-v33.js?v=33"></script>
 </body>
 </html>
