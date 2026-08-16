@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#f3efec" />
   <title>AmorellyWatch — смотрим вместе</title>
-  <link rel="stylesheet" href="/style-v33.css?v=33" />
+  <link rel="stylesheet" href="/style-v4.css?v=40" />
 </head>
 <body data-theme="light">
   <div id="splash" class="splash">
@@ -23,11 +23,12 @@
           <div class="brandIdentity">
             <img src="/amorelly-logo.jpg?v=32" class="brandLogo" alt="AmorellyWatch logo" />
             <div class="brandInfo">
-              <div class="brandName">AmorellyWatch <span class="version">v3.3</span></div>
+              <div class="brandName">AmorellyWatch <span class="version">v4</span></div>
               <div class="tag">Смотрим вместе, даже если не рядом</div>
             </div>
           </div>
-          <div class="topControls hidden" id="topControls">
+          <div class="topControls" id="topControls">
+            <button id="accountBtn" class="iconBtn accountBtn" title="Аккаунт">👤 Войти</button>
             <button id="themeBtn" class="iconBtn" title="Сменить тему">☀️ Светлая</button>
             <button id="menuBtn" class="iconBtn" title="Меню">☰</button>
           </div>
@@ -201,17 +202,65 @@
       <div id="historyList" class="historyList"></div>
     </section>
 
-    <section class="drawerSection">
+
+    <section class="drawerSection" id="accountSection">
       <div class="sectionTitleRow">
-        <h3>Друзья</h3>
-        <span class="muted">локально</span>
+        <h3>Аккаунт</h3>
+        <span id="accountStateBadge" class="statusPill">Гость</span>
       </div>
-      <p class="drawerHint">Пока без аккаунтов: добавь имя, чтобы быстро готовить приглашения. Список хранится только в этом браузере.</p>
-      <div class="friendAdd">
-        <input id="friendNameInput" maxlength="30" placeholder="Имя друга" />
-        <button id="addFriendBtn" class="primary">Добавить</button>
+      <div id="guestAccountBox" class="accountGuestBox">
+        <p class="drawerHint">Войди, чтобы добавлять друзей, видеть их статус и приглашать в комнату.</p>
+        <button id="drawerLoginBtn" class="primary fullBtn">Войти / зарегистрироваться</button>
       </div>
-      <div id="friendsList" class="friendsList"></div>
+      <div id="signedAccountBox" class="hidden">
+        <div class="profileCard">
+          <div class="profileAvatar">♥</div>
+          <div>
+            <strong id="profileDisplayName">Профиль</strong>
+            <div id="profileUsername" class="muted">@username</div>
+          </div>
+          <button id="logoutBtn" class="smallBtn">Выйти</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="drawerSection" id="privacySection">
+      <h3>Приватность</h3>
+      <div class="settingsList">
+        <label class="toggleRow">
+          <span><strong>Показывать мой просмотр</strong><small>Друзья увидят, что ты сейчас смотришь</small></span>
+          <input id="showActivityToggle" type="checkbox" checked />
+        </label>
+        <label class="toggleRow">
+          <span><strong>Показывать название</strong><small>Например: «Сериал · сезон 1, серия 3»</small></span>
+          <input id="showTitleToggle" type="checkbox" checked />
+        </label>
+        <label class="toggleRow">
+          <span><strong>Разрешать запросы в комнату</strong><small>Друзья смогут попроситься к просмотру</small></span>
+          <input id="allowJoinToggle" type="checkbox" checked />
+        </label>
+      </div>
+      <div id="privacySaveState" class="muted saveState"></div>
+    </section>
+
+    <section class="drawerSection" id="friendRequestsSection">
+      <div class="sectionTitleRow"><h3>Запросы в друзья</h3><span id="friendRequestCount" class="statusPill">0</span></div>
+      <div id="friendRequestsList" class="socialList"><div class="historyEmpty">Нет новых запросов.</div></div>
+    </section>
+
+    <section class="drawerSection" id="friendsSection">
+      <div class="sectionTitleRow"><h3>Друзья</h3><button id="refreshFriendsBtn" class="smallBtn">Обновить</button></div>
+      <div class="friendSearch">
+        <input id="friendSearchInput" maxlength="30" placeholder="Найти по @username" />
+        <button id="friendSearchBtn" class="primary">Найти</button>
+      </div>
+      <div id="friendSearchResults" class="socialList"></div>
+      <div id="realFriendsList" class="socialList"><div class="historyEmpty">Войди в аккаунт, чтобы увидеть друзей.</div></div>
+    </section>
+
+    <section class="drawerSection" id="roomRequestsSection">
+      <div class="sectionTitleRow"><h3>Приглашения и вход</h3><span id="roomRequestCount" class="statusPill">0</span></div>
+      <div id="roomRequestsList" class="socialList"><div class="historyEmpty">Пока пусто.</div></div>
     </section>
   </aside>
 
@@ -229,10 +278,40 @@
     <div id="friendQuickInvite" class="friendQuickInvite"></div>
   </section>
 
+
+  <div id="authModalBackdrop" class="modalBackdrop hidden"></div>
+  <section id="authModal" class="authModal card hidden" role="dialog" aria-modal="true">
+    <button id="closeAuthModalBtn" class="modalClose">✕</button>
+    <img src="/amorelly-logo.jpg?v=40" class="authLogo" alt="AmorellyWatch" />
+    <h2>Аккаунт AmorellyWatch</h2>
+    <p class="muted">Друзья, приватность и приглашения между устройствами.</p>
+    <div class="authTabs">
+      <button id="loginTabBtn" class="tab active">Войти</button>
+      <button id="registerTabBtn" class="tab">Регистрация</button>
+    </div>
+    <form id="loginForm" class="authForm">
+      <label>Email<input id="loginEmail" type="email" required autocomplete="email" /></label>
+      <label>Пароль<input id="loginPassword" type="password" minlength="6" required autocomplete="current-password" /></label>
+      <button class="primary fullBtn" type="submit">Войти</button>
+    </form>
+    <form id="registerForm" class="authForm hidden">
+      <label>Имя<input id="registerDisplayName" maxlength="30" required placeholder="Вадим" /></label>
+      <label>@username<input id="registerUsername" maxlength="24" required placeholder="vadim" pattern="[A-Za-z0-9_]{3,24}" /></label>
+      <label>Email<input id="registerEmail" type="email" required autocomplete="email" /></label>
+      <label>Пароль<input id="registerPassword" type="password" minlength="6" required autocomplete="new-password" /></label>
+      <button class="primary fullBtn" type="submit">Создать аккаунт</button>
+    </form>
+    <div id="authMessage" class="authMessage muted"></div>
+  </section>
+
+  <div id="notificationStack" class="notificationStack"></div>
+
   <audio id="remoteAudio" autoplay playsinline></audio>
 
+  <script src="/amorelly-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="/app-v33.js?v=33"></script>
+  <script src="/app-v4.js?v=40"></script>
 </body>
 </html>
