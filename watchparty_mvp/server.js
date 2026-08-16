@@ -10,6 +10,16 @@ const io = new Server(server);
 const rooms = new Map();
 const ROOM_TTL_MS = 6 * 60 * 60 * 1000;
 
+app.get("/amorelly-config.js", (req, res) => {
+  res.type("application/javascript");
+  res.setHeader("Cache-Control", "no-store");
+  const config = {
+    supabaseUrl: process.env.SUPABASE_URL || "",
+    supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY || ""
+  };
+  res.send(`window.AMORELLY_CONFIG = ${JSON.stringify(config)};`);
+});
+
 app.use(express.static(path.join(__dirname, "public"), {
   etag: false,
   lastModified: false,

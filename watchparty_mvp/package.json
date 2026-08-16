@@ -1,8 +1,8 @@
 {
   "name": "watchparty-two",
-  "version": "3.3.0",
+  "version": "4.0.0",
   "private": true,
-  "description": "AmorellyWatch v3.3 cozy watch party with splash, invitations, friends, themes and WebRTC",
+  "description": "AmorellyWatch v4 watch party with Supabase accounts, friends, privacy and room invites",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
