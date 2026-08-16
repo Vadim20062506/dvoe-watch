@@ -11,6 +11,44 @@ const rooms = new Map();
 
 app.use(express.static(path.join(__dirname, "public")));
 
+function getRoom(roomId) {
+  if (!rooms.has(roomId)) {
+    rooms.set(roomId, {
+      media: null,
+      episode: { season: 1, episode: 1, title: "" },
+      playback: { time: 0, playing: false, updatedAt: Date.now() },
+      members: new Map()
+    });
+  }
+  return rooms.get(roomId);
+}
+
+function emitParticipants(roomId) {
+  const room = rooms.get(roomId);
+  if (!room) return;
+
+  const participants = [...room.members.entries()].map(([id, member]) => ({
+    id,
+    name: member.name,
+    voiceReady: !!member.voiceReady
+  }));
+
+  io.to(roomId).emit("participants", participants);
+}
+
+function maybeStartVoice(roomId) {
+  const room = rooms.get(roomId);
+  if (!room) return;
+
+  const ready = [...room.members.entries()]
+    .filter(([, member]) => member.voiceReady)
+    .sort((a, b) => a[1].joinedAt - b[1].joinedAt);
+
+  if (ready.length === 2) {
+    io.to(ready[0][0]).emit("start-call", { peerId: ready[1][0] });
+  }
+}
+
 io.on("connection", (socket) => {
   socket.on("join-room", ({ roomId, name }) => {
     if (!roomId) return;
@@ -25,47 +63,86 @@ io.on("connection", (socket) => {
 
     socket.join(roomId);
     socket.data.roomId = roomId;
-    socket.data.name = (name || "Гость").slice(0, 30);
+    socket.data.name = String(name || "Гость").slice(0, 30);
 
-    if (!rooms.has(roomId)) {
-      rooms.set(roomId, {
-        media: null,
-        playback: { time: 0, playing: false, updatedAt: Date.now() }
-      });
-    }
-
-    const room = rooms.get(roomId);
-    socket.emit("room-state", room);
-
-    io.to(roomId).emit("presence", {
-      count: io.sockets.adapter.rooms.get(roomId)?.size || 0
+    const room = getRoom(roomId);
+    room.members.set(socket.id, {
+      name: socket.data.name,
+      joinedAt: Date.now(),
+      voiceReady: false
     });
+
+    socket.emit("room-state", {
+      media: room.media,
+      episode: room.episode,
+      playback: room.playback
+    });
+
+    emitParticipants(roomId);
 
     socket.to(roomId).emit("system-message", {
       text: `${socket.data.name} подключился`
     });
   });
 
+  socket.on("set-name", ({ name }) => {
+    const roomId = socket.data.roomId;
+    const room = rooms.get(roomId);
+    if (!room) return;
+
+    const clean = String(name || "Гость").trim().slice(0, 30) || "Гость";
+    socket.data.name = clean;
+
+    const member = room.members.get(socket.id);
+    if (member) member.name = clean;
+
+    emitParticipants(roomId);
+  });
+
   socket.on("set-media", (payload) => {
     const roomId = socket.data.roomId;
-    if (!roomId || !rooms.has(roomId)) return;
+    const room = rooms.get(roomId);
+    if (!room) return;
 
-    rooms.get(roomId).media = payload;
+    room.media = payload;
     socket.to(roomId).emit("set-media", payload);
+  });
+
+  socket.on("set-episode", (payload) => {
+    const roomId = socket.data.roomId;
+    const room = rooms.get(roomId);
+    if (!room) return;
+
+    room.episode = {
+      season: Math.max(1, Number(payload.season) || 1),
+      episode: Math.max(1, Number(payload.episode) || 1),
+      title: String(payload.title || "").slice(0, 80)
+    };
+
+    io.to(roomId).emit("set-episode", room.episode);
   });
 
   socket.on("sync", (payload) => {
     const roomId = socket.data.roomId;
-    if (!roomId || !rooms.has(roomId)) return;
+    const room = rooms.get(roomId);
+    if (!room) return;
 
     const state = {
-      time: Number(payload.time) || 0,
+      time: Math.max(0, Number(payload.time) || 0),
       playing: !!payload.playing,
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
+      senderId: socket.id
     };
 
-    rooms.get(roomId).playback = state;
+    room.playback = state;
     socket.to(roomId).emit("sync", state);
+  });
+
+  socket.on("request-sync", () => {
+    const roomId = socket.data.roomId;
+    const room = rooms.get(roomId);
+    if (!room) return;
+    socket.emit("sync", room.playback);
   });
 
   socket.on("chat", ({ text }) => {
@@ -81,19 +158,82 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("reaction", ({ emoji }) => {
+    const roomId = socket.data.roomId;
+    const allowed = ["❤️", "😂", "😱", "🍿", "🔥"];
+    if (!roomId || !allowed.includes(emoji)) return;
+
+    io.to(roomId).emit("reaction", {
+      emoji,
+      name: socket.data.name || "Гость",
+      id: socket.id,
+      at: Date.now()
+    });
+  });
+
+  socket.on("voice-ready", ({ ready }) => {
+    const roomId = socket.data.roomId;
+    const room = rooms.get(roomId);
+    if (!room) return;
+
+    const member = room.members.get(socket.id);
+    if (!member) return;
+
+    member.voiceReady = !!ready;
+    emitParticipants(roomId);
+
+    if (member.voiceReady) {
+      maybeStartVoice(roomId);
+    } else {
+      socket.to(roomId).emit("voice-peer-left");
+    }
+  });
+
+  socket.on("webrtc-offer", ({ targetId, offer }) => {
+    if (targetId && offer) {
+      io.to(targetId).emit("webrtc-offer", {
+        fromId: socket.id,
+        offer
+      });
+    }
+  });
+
+  socket.on("webrtc-answer", ({ targetId, answer }) => {
+    if (targetId && answer) {
+      io.to(targetId).emit("webrtc-answer", {
+        fromId: socket.id,
+        answer
+      });
+    }
+  });
+
+  socket.on("webrtc-ice", ({ targetId, candidate }) => {
+    if (targetId && candidate) {
+      io.to(targetId).emit("webrtc-ice", {
+        fromId: socket.id,
+        candidate
+      });
+    }
+  });
+
   socket.on("disconnect", () => {
     const roomId = socket.data.roomId;
     if (!roomId) return;
+
+    const room = rooms.get(roomId);
+    if (room) {
+      room.members.delete(socket.id);
+    }
 
     setTimeout(() => {
       const members = io.sockets.adapter.rooms.get(roomId);
       const count = members ? members.size : 0;
 
-      io.to(roomId).emit("presence", { count });
-
       if (count === 0) {
         rooms.delete(roomId);
       } else {
+        emitParticipants(roomId);
+        io.to(roomId).emit("voice-peer-left");
         io.to(roomId).emit("system-message", {
           text: `${socket.data.name || "Гость"} отключился`
         });
