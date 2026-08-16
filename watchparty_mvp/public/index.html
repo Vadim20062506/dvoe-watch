@@ -2,73 +2,79 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#f3efec" />
   <title>AmorellyWatch — смотрим вместе</title>
-  <link rel="stylesheet" href="/style-v41.css?v=41" />
+  <link rel="stylesheet" href="/style-v42.css?v=42" />
 </head>
 <body data-theme="light">
   <div id="splash" class="splash">
     <div class="splashInner">
-      <img src="/amorelly-logo.jpg?v=33" class="splashLogo" alt="AmorellyWatch" />
+      <img src="/amorelly-logo.jpg?v=42" class="splashLogo" alt="AmorellyWatch" />
       <div class="splashName">AmorellyWatch</div>
       <div class="splashHearts">♥ ✦ ♥ ✦ ♥</div>
       <div class="splashLoader"><span></span></div>
     </div>
   </div>
+
+  <div class="ambient ambientOne">♡</div>
+  <div class="ambient ambientTwo">✦</div>
+  <div class="ambient ambientThree">♡</div>
+
   <main class="app">
     <header class="topbar">
-      <div class="brandWrap">
-        <div class="brandRow">
-          <div class="brandIdentity">
-            <img src="/amorelly-logo.jpg?v=32" class="brandLogo" alt="AmorellyWatch logo" />
-            <div class="brandInfo">
-              <div class="brandName">AmorellyWatch <span class="version">v4</span></div>
-              <div class="tag">Смотрим вместе, даже если не рядом</div>
-            </div>
-          </div>
-          <div class="topControls" id="topControls">
-            <button id="accountBtn" class="iconBtn accountBtn" title="Аккаунт">👤 Войти</button>
-            <button id="themeBtn" class="iconBtn" title="Сменить тему">☀️ Светлая</button>
-            <button id="menuBtn" class="iconBtn" title="Меню">☰</button>
-          </div>
+      <div class="brandIdentity">
+        <img src="/amorelly-logo.jpg?v=42" class="brandLogo" alt="AmorellyWatch logo" />
+        <div class="brandInfo">
+          <div class="brandName">AmorellyWatch <span class="version">v4.2</span></div>
+          <div class="tag">ваш маленький кинотеатр на двоих</div>
         </div>
       </div>
-      <div class="presence"><span id="dot"></span><span id="presenceText">не подключено</span></div>
+      <div class="headerRight">
+        <div class="presence"><span id="dot"></span><span id="presenceText">не подключено</span></div>
+        <div class="topControls" id="topControls">
+          <button id="accountBtn" class="iconBtn accountBtn" title="Аккаунт">👤 Войти</button>
+          <button id="themeBtn" class="iconBtn" title="Сменить тему">☀️</button>
+          <button id="menuBtn" class="iconBtn" title="История и избранное">☰</button>
+        </div>
+      </div>
     </header>
 
-    <section id="lobby" class="card lobby">
+    <section id="lobby" class="card lobby heroCard">
+      <div class="heroGlow"></div>
       <div class="welcomeLogoRow">
-        <img src="/amorelly-logo.jpg?v=32" class="welcomeLogo" alt="AmorellyWatch logo" />
+        <img src="/amorelly-logo.jpg?v=42" class="welcomeLogo" alt="AmorellyWatch logo" />
       </div>
       <div id="inviteBadge" class="inviteBadge hidden">
         <div class="inviteIcon">💌</div>
         <div>
-          <strong>Тебя пригласили на совместный просмотр</strong>
+          <strong>Тебя пригласили смотреть вместе</strong>
           <div id="inviteRoomText" class="muted"></div>
         </div>
       </div>
-      <h1 id="lobbyTitle">AmorellyWatch для двоих</h1>
-      <p id="lobbyText">Создай комнату и отправь ссылку второму человеку.</p>
-      <label>
-        Твоё имя
-        <input id="nameInput" maxlength="30" placeholder="Например, Саша" />
+      <div class="heroKicker">Только вы двое · один вечер · один фильм</div>
+      <h1 id="lobbyTitle">Включайте и смотрите вместе</h1>
+      <p id="lobbyText">Создай комнату, отправь ссылку — и вы уже рядом.</p>
+      <label class="nameField">
+        Как тебя называть?
+        <input id="nameInput" maxlength="30" placeholder="Твоё имя" />
       </label>
-      <div class="row">
-        <button id="createBtn" class="primary">Создать комнату</button>
+      <div class="heroActions">
+        <button id="createBtn" class="primary createRoomBtn"><span class="btnIcon">♥</span><span class="btnText">Создать комнату</span></button>
       </div>
+      <div class="heroNote">Без установки · комната на двоих · история сохраняется</div>
     </section>
 
-    <section id="room" class="hidden">
+    <section id="room" class="hidden roomScene">
       <div class="card roomBar">
         <div>
-          <div class="eyebrow">Комната</div>
+          <div class="eyebrow">Ваша комната</div>
           <strong id="roomCode"></strong>
         </div>
         <div id="participants" class="participants"></div>
         <div class="roomBarActions">
           <button id="inviteBtn" class="primary">💌 Пригласить</button>
-          <button id="copyBtn">Ссылка</button>
+          <button id="copyBtn">🔗 Ссылка</button>
         </div>
       </div>
 
@@ -78,21 +84,19 @@
             <div class="sourceTop">
               <div class="tabs">
                 <button class="tab active" data-tab="youtube">YouTube</button>
-                <button class="tab" data-tab="local">Локальный файл</button>
+                <button class="tab" data-tab="local">Файл с ноутбука</button>
               </div>
               <button id="collapseSourceBtn" class="iconBtn" title="Свернуть">−</button>
             </div>
-
             <div id="sourceBody">
               <div id="youtubeTab">
                 <div class="sourceRow">
-                  <input id="youtubeUrl" placeholder="Вставь ссылку YouTube" />
+                  <input id="youtubeUrl" placeholder="Вставь ссылку на видео" />
                   <button id="loadYoutubeBtn" class="primary">Открыть</button>
                 </div>
               </div>
-
               <div id="localTab" class="hidden">
-                <div class="localHelp">Оба выбирают у себя один и тот же файл. Видео не загружается на сервер.</div>
+                <div class="localHelp">Выберите у себя одинаковый видеофайл — он никуда не загружается.</div>
                 <input id="fileInput" type="file" accept="video/*" />
               </div>
             </div>
@@ -100,13 +104,13 @@
 
           <div id="playerWrap" class="playerWrap card">
             <div id="emptyState" class="emptyState">
-              <div class="emptyIcon">💞</div>
-              <div>Выбери источник видео выше</div>
+              <div class="emptyIcon">♥</div>
+              <strong>Ваш экран готов</strong>
+              <div>Выбери видео выше</div>
             </div>
             <div id="youtubePlayer"></div>
             <video id="localVideo" class="hidden" controls playsinline></video>
             <div id="reactionLayer" class="reactionLayer"></div>
-
             <div id="videoCallLayer" class="videoCallLayer">
               <div id="remoteCamWrap" class="camTile hidden">
                 <video id="remoteVideo" autoplay playsinline></video>
@@ -116,49 +120,48 @@
                 <video id="localVideoCall" autoplay muted playsinline></video>
                 <span>Ты</span>
               </div>
-              <div id="remoteNoCam" class="remoteNoCam hidden">💗 Собеседник без камеры</div>
+              <div id="remoteNoCam" class="remoteNoCam hidden">♡ Собеседник без камеры</div>
             </div>
-
             <button id="fullscreenBtn" class="overlayBtn fullscreenBtn" title="На весь экран">⛶</button>
           </div>
 
-          <div class="card controls">
+          <div class="card controls compactControls">
             <div class="controlGroup">
               <button id="syncBtn">↻ Синхронизация</button>
               <span id="syncState">Ожидание видео</span>
             </div>
-            <div class="reactions">
-              <button class="reactionBtn" data-emoji="❤️">❤️</button>
-              <button class="reactionBtn" data-emoji="😂">😂</button>
-              <button class="reactionBtn" data-emoji="😱">😱</button>
-              <button class="reactionBtn" data-emoji="🍿">🍿</button>
-              <button class="reactionBtn" data-emoji="🔥">🔥</button>
-              <button class="reactionBtn" data-emoji="💖">💖</button>
+            <div class="movieActions">
+              <button id="favoriteBtn" class="softAccent" title="Добавить текущее видео в избранное">♡ В избранное</button>
+              <div class="reactions">
+                <button class="reactionBtn" data-emoji="❤️">❤️</button>
+                <button class="reactionBtn" data-emoji="😂">😂</button>
+                <button class="reactionBtn" data-emoji="😱">😱</button>
+                <button class="reactionBtn" data-emoji="🍿">🍿</button>
+                <button class="reactionBtn" data-emoji="🔥">🔥</button>
+                <button class="reactionBtn" data-emoji="💖">💖</button>
+              </div>
             </div>
           </div>
 
           <div class="card mediaControls">
             <div class="mediaStatus">
-              <strong>Связь</strong>
-              <span id="callStatus" class="muted">Голос и камера выключены</span>
+              <strong>Голос и камера</strong>
+              <span id="callStatus" class="muted">Выключены</span>
             </div>
             <div class="mediaButtons">
               <button id="micBtn" title="Микрофон">🎙️ Микрофон</button>
-              <button id="headphonesBtn" title="Звук собеседника">🎧 Звук собеседника</button>
+              <button id="headphonesBtn" title="Звук собеседника">🎧 Звук</button>
               <button id="cameraBtn" title="Камера">📷 Камера</button>
-              <button id="hangupBtn" class="danger hidden">Завершить связь</button>
+              <button id="hangupBtn" class="danger hidden">Завершить</button>
             </div>
           </div>
         </div>
 
         <aside id="chatCard" class="chat card">
-          <div class="chatHead">
-            <span>Чат</span>
-            <button id="collapseChatBtn" class="iconBtn" title="Свернуть чат">−</button>
-          </div>
+          <div class="chatHead"><span>Чат</span><button id="collapseChatBtn" class="iconBtn" title="Свернуть чат">−</button></div>
           <div id="messages" class="messages"></div>
           <form id="chatForm" class="chatForm">
-            <input id="chatInput" maxlength="500" placeholder="Сообщение…" />
+            <input id="chatInput" maxlength="500" placeholder="Написать…" />
             <button class="primary">→</button>
           </form>
         </aside>
@@ -169,98 +172,31 @@
   <div id="drawerBackdrop" class="drawerBackdrop hidden"></div>
   <aside id="drawer" class="drawer hidden">
     <div class="drawerHead">
-      <div>
-        <strong>Меню</strong>
-        <div class="muted">Прогресс и история</div>
-      </div>
+      <div><strong>Твоя коллекция</strong><div class="muted">Вернуться к хорошему вечеру проще</div></div>
       <button id="closeDrawerBtn" class="iconBtn">✕</button>
     </div>
 
-    <section class="drawerSection">
-      <h3>Текущий сериал</h3>
-      <div class="episodeInputs">
-        <label>Сериал
-          <input id="episodeTitle" maxlength="80" placeholder="Сериал" />
-        </label>
-        <div class="twoCols">
-          <label>Сезон
-            <input id="seasonInput" type="number" min="1" value="1" />
-          </label>
-          <label>Серия
-            <input id="episodeInput" type="number" min="1" value="1" />
-          </label>
-        </div>
-      </div>
-      <button id="setEpisodeBtn" class="primary fullBtn">Сохранить прогресс</button>
-    </section>
-
-    <section class="drawerSection">
-      <div class="sectionTitleRow">
-        <h3>История просмотра</h3>
-        <button id="clearHistoryBtn" class="smallBtn">Очистить</button>
-      </div>
+    <section class="drawerSection firstSection">
+      <div class="sectionTitleRow"><h3>Недавно смотрели</h3><button id="clearHistoryBtn" class="smallBtn">Очистить</button></div>
       <div id="historyList" class="historyList"></div>
     </section>
 
-
-    <section class="drawerSection" id="accountSection">
-      <div class="sectionTitleRow">
-        <h3>Аккаунт</h3>
-        <span id="accountStateBadge" class="statusPill">Гость</span>
-      </div>
-      <div id="guestAccountBox" class="accountGuestBox">
-        <p class="drawerHint">Войди, чтобы добавлять друзей, видеть их статус и приглашать в комнату.</p>
-        <button id="drawerLoginBtn" class="primary fullBtn">Войти / зарегистрироваться</button>
-      </div>
-      <div id="signedAccountBox" class="hidden">
-        <div class="profileCard">
-          <div class="profileAvatar">♥</div>
-          <div>
-            <strong id="profileDisplayName">Профиль</strong>
-            <div id="profileUsername" class="muted">@username</div>
-          </div>
-          <button id="logoutBtn" class="smallBtn">Выйти</button>
-        </div>
-      </div>
+    <section class="drawerSection">
+      <div class="sectionTitleRow"><h3>Избранное ♥</h3><button id="clearFavoritesBtn" class="smallBtn">Очистить</button></div>
+      <div id="favoritesList" class="historyList"></div>
     </section>
 
-    <section class="drawerSection" id="privacySection">
-      <h3>Приватность</h3>
-      <div class="settingsList">
-        <label class="toggleRow">
-          <span><strong>Показывать мой просмотр</strong><small>Друзья увидят, что ты сейчас смотришь</small></span>
-          <input id="showActivityToggle" type="checkbox" checked />
-        </label>
-        <label class="toggleRow">
-          <span><strong>Показывать название</strong><small>Например: «Сериал · сезон 1, серия 3»</small></span>
-          <input id="showTitleToggle" type="checkbox" checked />
-        </label>
-        <label class="toggleRow">
-          <span><strong>Разрешать запросы в комнату</strong><small>Друзья смогут попроситься к просмотру</small></span>
-          <input id="allowJoinToggle" type="checkbox" checked />
-        </label>
+    <section class="drawerSection accountMiniSection" id="accountSection">
+      <div id="guestAccountBox" class="accountMini">
+        <div><strong>Аккаунт</strong><div class="drawerHint">Нужен только для приглашений друзьям.</div></div>
+        <button id="drawerLoginBtn" class="smallBtn">Войти</button>
       </div>
-      <div id="privacySaveState" class="muted saveState"></div>
-    </section>
-
-    <section class="drawerSection" id="friendRequestsSection">
-      <div class="sectionTitleRow"><h3>Запросы в друзья</h3><span id="friendRequestCount" class="statusPill">0</span></div>
-      <div id="friendRequestsList" class="socialList"><div class="historyEmpty">Нет новых запросов.</div></div>
-    </section>
-
-    <section class="drawerSection" id="friendsSection">
-      <div class="sectionTitleRow"><h3>Друзья</h3><button id="refreshFriendsBtn" class="smallBtn">Обновить</button></div>
-      <div class="friendSearch">
-        <input id="friendSearchInput" maxlength="30" placeholder="Найти по @username" />
-        <button id="friendSearchBtn" class="primary">Найти</button>
+      <div id="signedAccountBox" class="accountMini hidden">
+        <div class="profileAvatar">♥</div>
+        <div><strong id="profileDisplayName">Профиль</strong><div id="profileUsername" class="muted">@username</div></div>
+        <button id="logoutBtn" class="smallBtn">Выйти</button>
       </div>
-      <div id="friendSearchResults" class="socialList"></div>
-      <div id="realFriendsList" class="socialList"><div class="historyEmpty">Войди в аккаунт, чтобы увидеть друзей.</div></div>
-    </section>
-
-    <section class="drawerSection" id="roomRequestsSection">
-      <div class="sectionTitleRow"><h3>Приглашения и вход</h3><span id="roomRequestCount" class="statusPill">0</span></div>
-      <div id="roomRequestsList" class="socialList"><div class="historyEmpty">Пока пусто.</div></div>
+      <span id="accountStateBadge" class="statusPill hidden">Гость</span>
     </section>
   </aside>
 
@@ -268,23 +204,31 @@
   <section id="inviteModal" class="inviteModal card hidden" role="dialog" aria-modal="true">
     <button id="closeInviteModalBtn" class="modalClose">✕</button>
     <div class="inviteBigIcon">💌</div>
-    <h2>Пригласить в AmorellyWatch</h2>
-    <p class="muted">Отправь эту ссылку — человек попадёт прямо в вашу комнату.</p>
+    <h2>Позови смотреть вместе</h2>
+    <p class="muted">Можно отправить ссылку или пригласить друга.</p>
     <div id="inviteLinkBox" class="inviteLinkBox"></div>
     <div class="inviteModalActions">
       <button id="copyInviteTextBtn" class="primary">Скопировать приглашение</button>
       <button id="copyInviteLinkBtn">Скопировать ссылку</button>
     </div>
     <div id="friendQuickInvite" class="friendQuickInvite"></div>
+    <details class="friendDetails">
+      <summary>Добавить друга по @username</summary>
+      <div class="friendSearch">
+        <input id="friendSearchInput" maxlength="30" placeholder="@username" />
+        <button id="friendSearchBtn" class="primary">Найти</button>
+      </div>
+      <div id="friendSearchResults" class="socialList"></div>
+      <div class="friendRequestsMini"><div class="sectionTitleRow"><strong>Запросы</strong><span id="friendRequestCount" class="statusPill">0</span></div><div id="friendRequestsList" class="socialList"></div></div>
+    </details>
   </section>
-
 
   <div id="authModalBackdrop" class="modalBackdrop hidden"></div>
   <section id="authModal" class="authModal card hidden" role="dialog" aria-modal="true">
     <button id="closeAuthModalBtn" class="modalClose">✕</button>
-    <img src="/amorelly-logo.jpg?v=40" class="authLogo" alt="AmorellyWatch" />
-    <h2>Аккаунт AmorellyWatch</h2>
-    <p class="muted">Друзья, приватность и приглашения между устройствами.</p>
+    <img src="/amorelly-logo.jpg?v=42" class="authLogo" alt="AmorellyWatch" />
+    <h2>Добро пожаловать ♥</h2>
+    <p class="muted authLead">Аккаунт нужен, чтобы быстро приглашать своего человека.</p>
     <div class="authTabs">
       <button id="loginTabBtn" class="tab active">Войти</button>
       <button id="registerTabBtn" class="tab">Регистрация</button>
@@ -292,26 +236,35 @@
     <form id="loginForm" class="authForm">
       <label>Email<input id="loginEmail" type="email" required autocomplete="email" /></label>
       <label>Пароль<input id="loginPassword" type="password" minlength="6" required autocomplete="current-password" /></label>
-      <button class="primary fullBtn" type="submit">Войти</button>
+      <button class="primary fullBtn authSubmit" type="submit">Войти</button>
     </form>
     <form id="registerForm" class="authForm hidden">
-      <label>Имя<input id="registerDisplayName" maxlength="30" required placeholder="Вадим" /></label>
-      <label>@username<input id="registerUsername" maxlength="24" required placeholder="vadim" pattern="[A-Za-z0-9_]{3,24}" /></label>
+      <label>Имя<input id="registerDisplayName" maxlength="30" required placeholder="Имя" /></label>
+      <label>@username<input id="registerUsername" maxlength="24" required placeholder="username" pattern="[A-Za-z0-9_]{3,24}" /></label>
       <label>Email<input id="registerEmail" type="email" required autocomplete="email" /></label>
       <label>Пароль<input id="registerPassword" type="password" minlength="6" required autocomplete="new-password" /></label>
-      <button class="primary fullBtn" type="submit">Создать аккаунт</button>
+      <button class="primary fullBtn authSubmit" type="submit">Создать аккаунт ♥</button>
     </form>
     <div id="authMessage" class="authMessage muted"></div>
   </section>
 
   <div id="notificationStack" class="notificationStack"></div>
 
-  <audio id="remoteAudio" autoplay playsinline></audio>
+  <!-- Технические элементы v4: скрыты, чтобы социальный backend оставался совместимым. -->
+  <div class="hidden" aria-hidden="true">
+    <input id="seasonInput" type="number" value="1" /><input id="episodeInput" type="number" value="1" /><input id="episodeTitle" value="" />
+    <button id="setEpisodeBtn"></button>
+    <input id="showActivityToggle" type="checkbox" checked /><input id="showTitleToggle" type="checkbox" checked /><input id="allowJoinToggle" type="checkbox" checked />
+    <div id="privacySaveState"></div>
+    <div id="realFriendsList"></div><button id="refreshFriendsBtn"></button>
+    <span id="roomRequestCount">0</span><div id="roomRequestsList"></div>
+  </div>
 
+  <audio id="remoteAudio" autoplay playsinline></audio>
   <script src="/amorelly-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="/app-v4.js?v=40"></script>
+  <script src="/app-v42.js?v=42"></script>
 </body>
 </html>

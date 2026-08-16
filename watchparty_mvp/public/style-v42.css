@@ -1,0 +1,361 @@
+:root{
+  color-scheme:light;
+  --bg:#f3efec;
+  --bg2:#ece4df;
+  --panel:rgba(255,255,255,.88);
+  --panel2:#fff8f6;
+  --muted:#6f6865;
+  --text:#181513;
+  --line:#dccfc7;
+  --accent:#c24d41;
+  --accent-2:#e67a6f;
+  --ok:#2fa968;
+  --danger:#d85b66;
+  --shadow:0 12px 34px rgba(72,40,35,.08);
+  --logo-opacity:.12;
+}
+body[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#130f12;
+  --bg2:#1d1319;
+  --panel:rgba(28,20,27,.82);
+  --panel2:#241922;
+  --muted:#c1b4bf;
+  --text:#fff7fb;
+  --line:#45313f;
+  --accent:#ff7e8a;
+  --accent-2:#c861d9;
+  --ok:#54d38c;
+  --danger:#ff798c;
+  --shadow:0 18px 42px rgba(0,0,0,.32);
+  --logo-opacity:.08;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,.35), transparent 28rem),
+    linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
+  color:var(--text);
+  position:relative;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:1;
+  background-image:
+    url('/amorelly-logo.jpg?v=32'),
+    url('/amorelly-logo.jpg?v=32'),
+    url('/amorelly-logo.jpg?v=32'),
+    url('/amorelly-logo.jpg?v=32'),
+    url('/amorelly-logo.jpg?v=32'),
+    url('/amorelly-logo.jpg?v=32');
+  background-repeat:no-repeat;
+  background-size:180px auto, 120px auto, 220px auto, 140px auto, 100px auto, 200px auto;
+  background-position:2% 12%, 88% 7%, 80% 70%, 5% 78%, 42% 10%, 52% 84%;
+  filter:grayscale(.1);
+  opacity:var(--logo-opacity);
+}
+body[data-theme="dark"]::after{
+  content:"✦   ♥   ✦   ☾   ♥   ✦   ☆   ♥   ✦";
+  position:fixed;
+  left:0;right:0;top:14px;
+  text-align:center;
+  color:rgba(255,220,240,.35);
+  font-size:20px;
+  letter-spacing:18px;
+  pointer-events:none;
+}
+button,input{font:inherit}
+button{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.56);
+  color:var(--text);
+  border-radius:14px;
+  padding:10px 14px;
+  cursor:pointer;
+  transition:.18s ease;
+}
+body[data-theme="dark"] button{background:rgba(255,255,255,.05)}
+button:hover{transform:translateY(-1px);filter:brightness(1.04)}
+button.primary{
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:white;
+  border-color:transparent;
+  font-weight:800;
+}
+button.active{
+  border-color:color-mix(in srgb, var(--accent) 60%, white 40%);
+  background:color-mix(in srgb, var(--accent) 14%, white 86%);
+}
+body[data-theme="dark"] button.active{
+  background:rgba(255,126,138,.14);
+}
+button.danger{
+  color:#fff1f3;
+  border-color:rgba(216,91,102,.4);
+  background:rgba(216,91,102,.2);
+}
+input{
+  width:100%;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.8);
+  color:var(--text);
+  border-radius:14px;
+  padding:11px 13px;
+  outline:none;
+}
+body[data-theme="dark"] input{background:rgba(255,255,255,.06)}
+input:focus{border-color:var(--accent)}
+.hidden{display:none!important}
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
+}
+.app{max-width:1420px;margin:0 auto;padding:24px 18px 44px;position:relative;z-index:2}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.brandWrap{flex:1;min-width:280px}
+.brandRow{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.brandIdentity{display:flex;align-items:center;gap:16px;min-width:0}
+.brandLogo{width:170px;height:90px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.08))}
+body[data-theme="dark"] .brandLogo{filter:drop-shadow(0 10px 18px rgba(255,140,170,.08)) brightness(1.04)}
+.brandInfo{display:grid;gap:5px}
+.brandName{font-weight:950;font-size:28px;letter-spacing:-.03em}
+.version{font-size:10px;color:var(--accent);border:1px solid color-mix(in srgb, var(--accent) 28%, white 72%);background:rgba(255,255,255,.5);border-radius:99px;padding:3px 7px;vertical-align:middle}
+body[data-theme="dark"] .version{background:rgba(255,255,255,.08)}
+.tag{color:var(--muted);font-size:13px;margin-top:2px}
+.topControls{display:flex;align-items:center;gap:8px}
+.iconBtn{padding:8px 12px;border-radius:12px}
+.presence{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;background:rgba(255,255,255,.6);padding:10px 14px;border:1px solid var(--line);border-radius:999px;backdrop-filter:blur(8px)}
+body[data-theme="dark"] .presence{background:rgba(255,255,255,.06)}
+#dot{width:9px;height:9px;border-radius:50%;background:#888}
+#dot.online{background:var(--ok);box-shadow:0 0 14px color-mix(in srgb, var(--ok) 65%, transparent)}
+.lobby{max-width:560px;margin:52px auto 0;padding:30px 30px 26px;background:color-mix(in srgb, var(--panel) 96%, white 4%)}
+.welcomeLogoRow{display:flex;justify-content:center;margin-bottom:8px}
+.welcomeLogo{width:220px;height:120px;object-fit:contain}
+.lobby h1{margin:0 0 8px}
+.lobby p{color:var(--muted);margin:0 0 24px}
+label{display:grid;gap:7px;color:color-mix(in srgb, var(--text) 84%, white 16%);font-size:13px}
+.row{display:flex;gap:10px;margin-top:16px}
+.roomBar{padding:12px 14px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;margin-bottom:14px}
+.roomBarActions{display:flex;gap:8px}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:10px;color:var(--muted)}
+.participants{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.person{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:rgba(255,255,255,.52);border-radius:999px;padding:6px 10px;font-size:12px}
+body[data-theme="dark"] .person{background:rgba(255,255,255,.05)}
+.personDot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.watchGrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+.watchMain{display:grid;gap:12px;min-width:0}
+.source{padding:12px}
+.sourceTop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab.active{background:color-mix(in srgb, var(--accent) 15%, white 85%);border-color:color-mix(in srgb, var(--accent) 32%, white 68%)}
+body[data-theme="dark"] .tab.active{background:rgba(255,126,138,.15)}
+#sourceBody{margin-top:10px}
+.sourceRow{display:grid;grid-template-columns:1fr auto;gap:10px}
+.localHelp{color:var(--muted);font-size:13px;margin-bottom:10px}
+.playerWrap{position:relative;overflow:hidden;aspect-ratio:16/9;background:#0c0b10;display:flex;align-items:center;justify-content:center}
+#youtubePlayer,.playerWrap iframe,.playerWrap>video{width:100%;height:100%;border:0}
+.emptyState{color:#d4c7ce;text-align:center;display:grid;gap:10px;padding:30px}
+body:not([data-theme="dark"]) .emptyState{color:#998f8a}
+.emptyIcon{font-size:42px}
+.overlayBtn{position:absolute;z-index:50;background:rgba(255,255,255,.74);backdrop-filter:blur(8px)}
+body[data-theme="dark"] .overlayBtn{background:rgba(25,16,25,.72)}
+.fullscreenBtn{right:12px;top:12px;font-size:20px;padding:7px 11px}
+.reactionLayer{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:30}
+.floatingReaction{position:absolute;bottom:8%;left:50%;font-size:42px;animation:floatReaction 1.9s ease-out forwards}
+@keyframes floatReaction{0%{transform:translate(-50%,20px) scale(.7);opacity:0}15%{opacity:1}100%{transform:translate(calc(-50% + var(--drift)),-290px) scale(1.35) rotate(var(--rot));opacity:0}}
+.videoCallLayer{position:absolute;inset:0;pointer-events:none;z-index:25}
+.camTile{position:absolute;right:14px;bottom:14px;width:min(34%,280px);aspect-ratio:16/10;background:#111;border:1px solid rgba(255,255,255,.28);border-radius:14px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.camTile.small{width:min(19%,150px);right:20px;bottom:calc(14px + min(34%,280px) * .68)}
+.camTile video{width:100%;height:100%;object-fit:cover;background:#090909}
+.camTile span{position:absolute;left:7px;bottom:6px;background:rgba(0,0,0,.55);color:white;padding:3px 6px;border-radius:7px;font-size:10px}
+.remoteNoCam{position:absolute;right:14px;bottom:14px;padding:10px 12px;border-radius:14px;background:rgba(14,14,20,.78);color:#fff;border:1px solid rgba(255,255,255,.18)}
+.controls,.mediaControls{padding:11px 13px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.controlGroup{display:flex;align-items:center;gap:12px}
+#syncState,.muted{font-size:12px;color:var(--muted)}
+.reactions{display:flex;gap:6px;flex-wrap:wrap}
+.reactionBtn{padding:7px 9px;font-size:17px}
+.mediaButtons{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.mediaStatus{display:grid;gap:4px}
+.chat{height:min(73vh,720px);min-height:470px;position:sticky;top:14px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden}
+.chat.collapsed{height:auto;min-height:0;grid-template-rows:auto}
+.chat.collapsed .messages,.chat.collapsed .chatForm{display:none}
+.chatHead{padding:13px 14px;font-weight:800;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.messages{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:12px;display:flex;flex-direction:column;gap:9px}
+.msg{background:rgba(255,255,255,.5);border:1px solid color-mix(in srgb, var(--line) 84%, white 16%);border-radius:12px;padding:8px 10px;word-break:break-word}
+body[data-theme="dark"] .msg{background:rgba(255,255,255,.04)}
+.msg .meta{font-size:10px;color:var(--muted);margin-bottom:3px}
+.msg.system{background:transparent;border:0;color:var(--muted);font-size:12px;text-align:center}
+.chatForm{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px;border-top:1px solid var(--line)}
+.drawerBackdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90}
+.drawer{position:fixed;z-index:100;left:0;top:0;bottom:0;width:min(420px,92vw);background:var(--panel2);border-right:1px solid var(--line);padding:18px;overflow-y:auto;box-shadow:18px 0 50px rgba(0,0,0,.24);backdrop-filter:blur(18px)}
+.drawerHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.drawerSection{padding:16px 0;border-top:1px solid var(--line)}
+.drawerSection h3{margin:0 0 12px}
+.twoCols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.fullBtn{width:100%;margin-top:12px}
+.sectionTitleRow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.smallBtn{padding:6px 9px;font-size:12px}
+.historyList{display:grid;gap:8px}
+.historyItem{border:1px solid var(--line);background:rgba(255,255,255,.45);border-radius:12px;padding:10px;display:flex;justify-content:space-between;gap:10px}
+body[data-theme="dark"] .historyItem{background:rgba(255,255,255,.04)}
+.historyTitle{font-weight:700;font-size:13px}
+.historyMeta{color:var(--muted);font-size:11px;margin-top:3px}
+.historyEmpty{color:var(--muted);font-size:13px;padding:8px 0}
+@media(max-width:980px){.watchGrid{grid-template-columns:1fr}.chat{position:static;height:360px;min-height:360px}}
+@media(max-width:700px){
+  .app{padding:16px 10px 30px}
+  .brandRow{flex-direction:column;align-items:stretch}
+  .topControls{justify-content:flex-start}
+  .brandIdentity{align-items:flex-start}
+  .brandLogo{width:155px;height:84px}
+  .roomBar{grid-template-columns:1fr auto}
+  .participants{grid-column:1/-1;grid-row:2;justify-content:flex-start}
+  .controls,.mediaControls{align-items:stretch;flex-direction:column}
+  .reactions,.mediaButtons{justify-content:space-between}
+  .reactionBtn,.mediaButtons button{flex:1}
+  .sourceRow{grid-template-columns:1fr}
+  .camTile{width:42%}
+  .camTile.small{width:25%}
+}
+
+
+/* v3.3 motion + invite + friends */
+.splash{
+  position:fixed;inset:0;z-index:9999;display:grid;place-items:center;
+  background:linear-gradient(160deg,var(--bg),var(--bg2));
+  transition:opacity .55s ease,visibility .55s ease;
+}
+.splash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.splashInner{text-align:center;animation:splashIn .7s ease both}
+.splashLogo{width:min(330px,70vw);height:180px;object-fit:contain;filter:drop-shadow(0 16px 30px rgba(0,0,0,.12))}
+.splashName{font-size:28px;font-weight:950;letter-spacing:-.03em;margin-top:-18px}
+.splashHearts{color:var(--accent);letter-spacing:10px;margin:12px 0 16px;opacity:.7}
+.splashLoader{width:180px;height:3px;border-radius:999px;background:color-mix(in srgb,var(--line) 70%,transparent);overflow:hidden;margin:auto}
+.splashLoader span{display:block;width:46%;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));animation:loaderMove 1.15s ease-in-out infinite}
+@keyframes splashIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes loaderMove{0%{transform:translateX(-120%)}100%{transform:translateX(260%)}}
+
+.card{animation:cardIn .38s ease both}
+@keyframes cardIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+button{transition:transform .16s ease,filter .16s ease,background .2s ease,border-color .2s ease}
+
+.inviteBadge{display:flex;gap:12px;align-items:center;padding:12px 14px;margin-bottom:18px;border:1px dashed color-mix(in srgb,var(--accent) 48%,var(--line));border-radius:16px;background:color-mix(in srgb,var(--accent) 7%,var(--panel))}
+.inviteIcon{font-size:28px}
+
+.modalBackdrop{position:fixed;inset:0;z-index:190;background:rgba(15,9,13,.5);backdrop-filter:blur(4px)}
+.inviteModal{position:fixed;z-index:200;left:50%;top:50%;transform:translate(-50%,-50%);width:min(520px,92vw);padding:28px;text-align:center}
+.inviteModal h2{margin:6px 0 8px}.inviteBigIcon{font-size:48px}.modalClose{position:absolute;right:12px;top:12px;padding:7px 10px}
+.inviteLinkBox{margin:18px 0 12px;padding:12px;border:1px solid var(--line);background:rgba(255,255,255,.35);border-radius:14px;word-break:break-all;font-size:13px}
+body[data-theme="dark"] .inviteLinkBox{background:rgba(255,255,255,.05)}
+.inviteModalActions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.friendQuickInvite{margin-top:16px;display:grid;gap:7px;text-align:left}
+.friendQuickInvite .quickTitle{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.quickFriend{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:rgba(255,255,255,.26)}
+body[data-theme="dark"] .quickFriend{background:rgba(255,255,255,.04)}
+
+.drawerHint{font-size:12px;line-height:1.45;color:var(--muted);margin:-4px 0 10px}
+.friendAdd{display:grid;grid-template-columns:1fr auto;gap:8px}.friendsList{display:grid;gap:8px;margin-top:10px}
+.friendItem{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.35)}
+body[data-theme="dark"] .friendItem{background:rgba(255,255,255,.04)}
+.friendAvatar{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--accent) 14%,var(--panel));font-weight:800;color:var(--accent)}
+.friendIdentity{display:flex;align-items:center;gap:9px;min-width:0}.friendName{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.friendActions{display:flex;gap:5px}.friendActions button{padding:6px 8px;font-size:11px}
+
+body[data-theme="dark"]::after{animation:twinkle 4s ease-in-out infinite alternate}
+@keyframes twinkle{from{opacity:.45;transform:translateY(0)}to{opacity:.75;transform:translateY(3px)}}
+
+@media(max-width:700px){
+  .inviteModalActions{grid-template-columns:1fr}
+  .friendAdd{grid-template-columns:1fr}
+  .roomBarActions{display:grid;grid-template-columns:1fr 1fr}
+}
+
+/* v4 accounts & social */
+.accountBtn{font-weight:750}
+.statusPill{font-size:11px;padding:5px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:rgba(255,255,255,.42)}
+body[data-theme="dark"] .statusPill{background:rgba(255,255,255,.05)}
+.profileCard{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:11px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.36)}
+body[data-theme="dark"] .profileCard{background:rgba(255,255,255,.04)}
+.profileAvatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;font-size:18px}
+.settingsList{display:grid;gap:8px}
+.toggleRow{grid-template-columns:1fr auto;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 65%,transparent)}
+.toggleRow span{display:grid;gap:3px}.toggleRow small{color:var(--muted);font-size:11px;line-height:1.35}.toggleRow input{width:20px;height:20px;accent-color:var(--accent)}
+.saveState{min-height:18px;margin-top:8px}
+.friendSearch{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px}
+.socialList{display:grid;gap:8px;margin-top:9px}
+.socialItem{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.38)}
+body[data-theme="dark"] .socialItem{background:rgba(255,255,255,.035)}
+.socialTitle{font-weight:800;font-size:13px}.socialMeta{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4}.socialActions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.authModal{position:fixed;z-index:130;left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,calc(100vw - 28px));padding:26px}
+.authLogo{display:block;width:170px;height:86px;object-fit:contain;margin:0 auto 4px}.authModal h2{text-align:center;margin:4px 0 6px}.authModal>p{text-align:center}.authTabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 12px}.authForm{display:grid;gap:11px}.authMessage{min-height:20px;margin-top:10px;text-align:center}
+.notificationStack{position:fixed;z-index:160;right:18px;top:18px;width:min(380px,calc(100vw - 36px));display:grid;gap:10px;pointer-events:none}.notificationCard{padding:13px;pointer-events:auto;animation:notificationIn .25s ease}.notificationText{font-weight:700;font-size:13px;line-height:1.4}.notificationActions{display:flex;gap:8px;margin-top:10px}
+@keyframes notificationIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@media(max-width:700px){.socialItem{grid-template-columns:1fr}.socialActions{justify-content:flex-start}.friendSearch{grid-template-columns:1fr}.notificationStack{left:12px;right:12px;top:12px;width:auto}}
+
+
+
+/* ===== AmorellyWatch v4.2 Clean UX ===== */
+:root{
+  --radius-xl:28px;
+  --soft-pink:rgba(194,77,65,.08);
+}
+body{min-height:100dvh;background-attachment:fixed}
+body::before{opacity:calc(var(--logo-opacity) * .72);background-size:210px auto,130px auto,250px auto,150px auto,110px auto,210px auto}
+.app{max-width:1480px;padding-top:18px}
+.topbar{align-items:center;margin-bottom:22px}
+.brandLogo{width:220px;height:112px;border:0!important;border-radius:0!important;padding:0!important;background:transparent!important;object-fit:contain;filter:drop-shadow(0 12px 22px rgba(50,25,25,.08))}
+.brandName{font-size:30px}.tag{font-size:13px}
+.headerRight{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.topControls{display:flex;gap:7px}.topControls .iconBtn{min-height:42px}
+.ambient{position:fixed;pointer-events:none;z-index:0;color:color-mix(in srgb,var(--accent) 22%,transparent);font-family:serif;animation:ambientFloat 7s ease-in-out infinite alternate}
+.ambientOne{font-size:84px;left:5%;top:38%}.ambientTwo{font-size:50px;right:8%;top:33%;animation-delay:-2s}.ambientThree{font-size:110px;right:5%;bottom:7%;animation-delay:-4s}
+@keyframes ambientFloat{from{transform:translateY(0) rotate(-7deg);opacity:.24}to{transform:translateY(-16px) rotate(5deg);opacity:.48}}
+.card{border-radius:var(--radius-xl)}
+.heroCard{position:relative;overflow:hidden;max-width:640px;margin-top:28px;padding:28px 46px 34px;text-align:center}
+.heroGlow{position:absolute;width:270px;height:270px;border-radius:50%;background:color-mix(in srgb,var(--accent) 14%,transparent);filter:blur(50px);top:-150px;left:50%;transform:translateX(-50%);pointer-events:none}
+.welcomeLogoRow{position:relative;z-index:1;margin:-8px 0 -6px}.welcomeLogo{width:320px;height:165px;border:0!important;border-radius:0!important;background:transparent!important;object-fit:contain;filter:drop-shadow(0 14px 24px rgba(64,34,34,.10))}
+.heroKicker{text-transform:uppercase;letter-spacing:.13em;font-size:10px;font-weight:800;color:var(--accent);margin-bottom:9px}.lobby h1{font-size:clamp(29px,4vw,42px);letter-spacing:-.045em;margin-bottom:10px;line-height:1.02}.lobby p{font-size:15px;line-height:1.55;max-width:460px;margin:0 auto 24px}.nameField{text-align:left;max-width:430px;margin:0 auto}.heroActions{display:flex;justify-content:center;margin-top:15px}.createRoomBtn{min-width:260px;min-height:54px;font-size:15px;box-shadow:0 12px 26px color-mix(in srgb,var(--accent) 25%,transparent);position:relative;overflow:hidden}.createRoomBtn::after{content:"";position:absolute;inset:-50%;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.32),transparent 65%);transform:translateX(-70%);transition:.5s}.createRoomBtn:hover::after{transform:translateX(70%)}.btnIcon{display:inline-block;margin-right:7px}.createRoomBtn.isCreating .btnIcon{animation:heartBeat .55s ease infinite alternate}.heroNote{font-size:11px;color:var(--muted);margin-top:13px}
+@keyframes heartBeat{to{transform:scale(1.3)}}
+body.roomCreating .heroCard{animation:roomBirth .7s ease both}@keyframes roomBirth{50%{transform:scale(.985);box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 7%,transparent)}100%{transform:none}}
+.roomScene{animation:roomSceneIn .55s cubic-bezier(.2,.8,.2,1) both}@keyframes roomSceneIn{from{opacity:0;transform:translateY(14px) scale(.992)}to{opacity:1;transform:none}}
+.roomBar{border-radius:22px}.source{border-radius:22px}.playerWrap{border-radius:25px;box-shadow:0 20px 48px rgba(0,0,0,.15)}
+.emptyState strong{font-size:20px;color:#eee}.emptyIcon{font-size:48px;color:#f5b7bd;animation:emptyPulse 2.6s ease-in-out infinite}@keyframes emptyPulse{50%{transform:scale(1.1);opacity:.75}}
+.compactControls{gap:10px}.movieActions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.softAccent.active{background:color-mix(in srgb,var(--accent) 12%,var(--panel));color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,var(--line));font-weight:800}
+.chat{border-radius:24px}.messages{scrollbar-width:thin}.chatForm input{min-height:43px}
+
+/* menu is intentionally small: history + favorites + compact account */
+.drawer{width:min(455px,94vw);padding:22px;border-radius:0 28px 28px 0}.drawerHead{padding-bottom:10px}.drawerHead strong{font-size:20px}.firstSection{border-top:0!important;padding-top:4px}.drawerSection{padding:17px 0}.accountMiniSection{padding-bottom:max(8px,env(safe-area-inset-bottom))}.accountMini{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px}.signedAccountBox.accountMini{grid-template-columns:auto 1fr auto}.collectionItem{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.38);transition:transform .18s ease,border-color .18s ease}.collectionItem:hover{transform:translateY(-1px);border-color:color-mix(in srgb,var(--accent) 28%,var(--line))}body[data-theme="dark"] .collectionItem{background:rgba(255,255,255,.035)}.collectionIcon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 10%,var(--panel));color:var(--accent);font-weight:900}.collectionBody{min-width:0}.collectionBody .historyTitle{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.collectionActions{display:flex;gap:5px;align-items:center}.iconOnlyBtn{padding:6px 9px}.historyList{display:grid;gap:8px}
+
+/* invite modal + friend search only when the user actually invites */
+.inviteModal{z-index:240!important;border-radius:30px;padding:30px}.modalBackdrop{z-index:220!important}.inviteBigIcon{animation:inviteFloat 2.2s ease-in-out infinite}@keyframes inviteFloat{50%{transform:translateY(-5px) rotate(-4deg)}}.friendDetails{margin-top:14px;text-align:left;border-top:1px solid var(--line);padding-top:12px}.friendDetails summary{cursor:pointer;color:var(--muted);font-size:12px;font-weight:750}.friendDetails[open] summary{margin-bottom:10px;color:var(--text)}.friendRequestsMini{margin-top:12px}.friendQuickInvite{max-height:220px;overflow:auto}
+
+/* auth: always above blur + pleasant motion */
+#authModalBackdrop{z-index:250!important}.authModal{z-index:260!important;top:50%!important;transform:translate(-50%,-50%)!important;animation:authPop .36s cubic-bezier(.2,.9,.2,1) both!important;border-radius:30px!important;overflow:hidden}.authModal::before{content:"";position:absolute;inset:-100px auto auto 50%;width:260px;height:190px;border-radius:50%;background:color-mix(in srgb,var(--accent) 12%,transparent);filter:blur(42px);transform:translateX(-50%);pointer-events:none}.authLogo{position:relative;width:230px;height:112px;border:0!important;border-radius:0!important;background:transparent!important}.authLead{position:relative}.authForm,.authTabs,.authMessage,.authModal h2{position:relative}.authSubmit{min-height:48px}.authWorking .authLogo{animation:logoBreath .85s ease-in-out infinite alternate}.authSuccess{animation:authSuccess .5s ease both!important}.authShake{animation:authShake .4s ease both!important}@keyframes authPop{from{opacity:0;transform:translate(-50%,-47%) scale(.96)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}@keyframes logoBreath{to{transform:scale(1.04);filter:drop-shadow(0 9px 15px color-mix(in srgb,var(--accent) 15%,transparent))}}@keyframes authSuccess{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--ok) 12%,transparent)}}@keyframes authShake{20%,60%{transform:translate(calc(-50% - 5px),-50%)!important}40%,80%{transform:translate(calc(-50% + 5px),-50%)!important}}
+
+/* notifications: action cards can have a visible countdown */
+.notificationStack{z-index:300!important}.notificationCard{position:relative;overflow:hidden;border-radius:20px!important;box-shadow:0 18px 50px rgba(25,12,20,.18)}.notificationCard.leaving{animation:toastOut .18s ease forwards}.notificationTimer{position:absolute;left:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:100%;transform-origin:left;animation:toastTimer var(--toast-duration) linear forwards}.notification-success{border-color:color-mix(in srgb,var(--ok) 35%,var(--line))}@keyframes toastTimer{to{transform:scaleX(0)}}@keyframes toastOut{to{opacity:0;transform:translateY(-8px) scale(.98)}}
+
+@media(max-width:980px){
+  .brandLogo{width:190px;height:96px}.watchGrid{grid-template-columns:1fr}.chat{position:static;height:340px;min-height:340px}.movieActions{justify-content:space-between}
+}
+@media(max-width:700px){
+  .app{padding:10px 10px calc(24px + env(safe-area-inset-bottom))}.topbar{align-items:center;gap:7px}.brandIdentity{gap:6px}.brandLogo{width:138px;height:72px}.brandInfo{display:none}.headerRight{margin-left:auto;gap:5px}.presence{display:none}.topControls{gap:4px}.topControls .iconBtn{padding:8px 9px;min-height:38px;font-size:12px}.accountBtn{max-width:118px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .heroCard{margin-top:12px;padding:18px 17px 24px;border-radius:25px}.welcomeLogo{width:270px;height:138px}.heroKicker{font-size:9px}.lobby h1{font-size:31px}.lobby p{font-size:14px;margin-bottom:19px}.createRoomBtn{width:100%;min-width:0}.heroNote{line-height:1.4}
+  .roomBar{grid-template-columns:1fr;padding:12px;gap:10px}.participants{grid-column:auto;grid-row:auto;justify-content:flex-start}.roomBarActions{display:grid;grid-template-columns:1fr 1fr;width:100%}.sourceTop{align-items:flex-start}.tabs{display:grid;grid-template-columns:1fr 1fr;flex:1}.source{padding:10px}.playerWrap{border-radius:19px}.controls,.mediaControls{flex-direction:column;align-items:stretch}.controlGroup{justify-content:space-between}.movieActions{display:grid;grid-template-columns:1fr;align-items:stretch}.softAccent{width:100%}.reactions{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}.reactionBtn{padding:7px 2px}.mediaButtons{display:grid;grid-template-columns:1fr 1fr}.mediaButtons button{width:100%;font-size:12px;padding:9px 5px}.chat{height:320px;min-height:320px}.camTile{width:48%;right:8px;bottom:8px}.camTile.small{width:28%;right:12px}.remoteNoCam{font-size:11px;right:8px;bottom:8px}
+  .drawer{left:0;right:0;top:auto;bottom:0;width:100%;height:min(76dvh,700px);border-radius:28px 28px 0 0;border-right:1px solid var(--line);border-top:1px solid var(--line);padding:18px 14px calc(14px + env(safe-area-inset-bottom));animation:drawerUp .3s cubic-bezier(.2,.8,.2,1) both}@keyframes drawerUp{from{transform:translateY(35%);opacity:0}to{transform:none;opacity:1}}.collectionItem{grid-template-columns:auto minmax(0,1fr);}.collectionActions{grid-column:1/-1;display:grid;grid-template-columns:1fr auto}.collectionActions .primary{width:100%}
+  .inviteModal{top:auto!important;bottom:0;left:0!important;transform:none!important;width:100%;max-height:88dvh;overflow:auto;border-radius:28px 28px 0 0!important;padding:24px 16px calc(20px + env(safe-area-inset-bottom));animation:sheetUp .3s ease both!important}@keyframes sheetUp{from{transform:translateY(30%);opacity:0}to{transform:none;opacity:1}}.inviteModalActions{grid-template-columns:1fr}.friendQuickInvite{max-height:180px}
+  .authModal{width:calc(100vw - 18px)!important;max-height:90dvh;overflow:auto;padding:20px 16px calc(20px + env(safe-area-inset-bottom))!important}.authLogo{width:205px;height:98px}.authTabs{position:sticky;top:-20px;z-index:2;background:var(--panel);padding-top:8px}
+  /* incoming invitation is intentionally large on phones: about half of the screen */
+  .notificationStack{left:10px!important;right:10px!important;top:10px!important;width:auto!important}.notificationCard.notification-invite{position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));top:auto;min-height:46dvh;display:flex;flex-direction:column;justify-content:center;padding:24px 18px;border-radius:28px!important;background:color-mix(in srgb,var(--panel) 96%,var(--accent) 4%);z-index:330}.notification-invite .notificationText{font-size:20px;line-height:1.25;text-align:center;margin:auto 0 18px}.notification-invite .notificationActions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:auto}.notification-invite .notificationActions button{min-height:50px;font-size:15px}.notification-success{margin-top:6px}
+  .ambientOne{font-size:55px}.ambientTwo{font-size:35px}.ambientThree{font-size:70px}
+}
