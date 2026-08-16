@@ -4,6 +4,8 @@ const $ = (id) => document.getElementById(id);
 
 const lobby = $("lobby");
 const roomEl = $("room");
+const lobbyTitle = $("lobbyTitle");
+const lobbyText = $("lobbyText");
 const nameInput = $("nameInput");
 const createBtn = $("createBtn");
 const roomCode = $("roomCode");
@@ -34,7 +36,10 @@ const muteBtn = $("muteBtn");
 const voiceStatus = $("voiceStatus");
 const remoteAudio = $("remoteAudio");
 
-let roomId = new URL(location.href).searchParams.get("room") || "";
+const roomPathMatch = location.pathname.match(/^\/room\/([A-Z0-9_-]{4,32})\/?$/i);
+const legacyRoomParam = new URL(location.href).searchParams.get("room");
+let invitedRoomId = roomPathMatch?.[1]?.toUpperCase() || legacyRoomParam?.toUpperCase() || "";
+let roomId = "";
 let myName = localStorage.getItem("wp_name") || "";
 let player = null;
 let playerReady = false;
@@ -59,13 +64,12 @@ function makeRoomId() {
 }
 
 function enterRoom(id) {
-  roomId = id;
+  roomId = String(id || "").toUpperCase();
   myName = nameInput.value.trim() || myName || "Гость";
   localStorage.setItem("wp_name", myName);
 
-  const url = new URL(location.href);
-  url.searchParams.set("room", roomId);
-  history.replaceState({}, "", url);
+  // Надёжная ссылка: ID комнаты хранится в path, а не в ?room=...
+  history.replaceState({}, "", `/room/${encodeURIComponent(roomId)}`);
 
   lobby.classList.add("hidden");
   roomEl.classList.remove("hidden");
@@ -73,11 +77,32 @@ function enterRoom(id) {
   socket.emit("join-room", { roomId, name: myName });
 }
 
-createBtn.addEventListener("click", () => enterRoom(makeRoomId()));
+function configureLobby() {
+  if (invitedRoomId) {
+    lobbyTitle.textContent = "Вас пригласили смотреть вместе";
+    lobbyText.textContent = `Комната ${invitedRoomId}. Введи имя и присоединяйся.`;
+    createBtn.textContent = "Войти в комнату";
 
-if (roomId) {
-  enterRoom(roomId);
+    // Старые ссылки ?room=... сразу превращаем в новый формат /room/...
+    if (legacyRoomParam && !roomPathMatch) {
+      history.replaceState({}, "", `/room/${encodeURIComponent(invitedRoomId)}`);
+    }
+  } else {
+    lobbyTitle.textContent = "Совместный просмотр на двоих";
+    lobbyText.textContent = "Создай комнату и отправь ссылку второму человеку.";
+    createBtn.textContent = "Создать комнату";
+  }
 }
+
+createBtn.addEventListener("click", () => {
+  if (invitedRoomId) {
+    enterRoom(invitedRoomId);
+  } else {
+    enterRoom(makeRoomId());
+  }
+});
+
+configureLobby();
 
 copyBtn.addEventListener("click", async () => {
   try {

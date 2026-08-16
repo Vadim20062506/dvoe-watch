@@ -11,6 +11,12 @@ const rooms = new Map();
 
 app.use(express.static(path.join(__dirname, "public")));
 
+// Комнатные ссылки используем в пути (/room/ABC123), а не в query-параметре.
+// Так Telegram и внешние браузеры не теряют ID комнаты при переходе.
+app.get("/room/:roomId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 function getRoom(roomId) {
   if (!rooms.has(roomId)) {
     rooms.set(roomId, {
